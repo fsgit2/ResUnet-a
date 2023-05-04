@@ -2,9 +2,10 @@ import keras.models as KM
 import keras.layers as KL
 import keras.engine as KE
 import keras.backend as KB
-from keras.utils import plot_model
-from keras.preprocessing.image import img_to_array
+from tensorflow.keras.utils import plot_model
+from tensorflow.keras.preprocessing.image import img_to_array
 from keras.applications.resnet50 import ResNet50
+from tensorflow.keras import optimizers
 
 from config import UnetConfig
 import utils
@@ -111,7 +112,7 @@ class UNet(object):
         x=KL.Conv2D(self.config.CLASSES_NUM,(1,1))(x)
         x=KL.Activation('softmax')(x)
         model=KM.Model(inputs=inputs,outputs=x)
-        model.compile(optimizer=keras.optimizers.SGD(lr=0.001,momentum=0.8),loss=Tanimoto_loss,metrics=['accuracy'])
+        model.compile(optimizer=optimizers.SGD(lr=0.001,momentum=0.8),loss=Tanimoto_loss,metrics=['accuracy'])
         model.summary()
         return model
 
@@ -156,7 +157,7 @@ class UNet(object):
         for i in range(sub_class):
             curcolor[0]=curcolor[0]+delta
             for j in range(sub_class):
-            curcolor[1]=curcolor[1]+delta
+                curcolor[1]=curcolor[1]+delta
                 for k in range(sub_class):
                     curcolor[2]=curcolor[2]+delta
                     color.append([curcolor[0],curcolor[1],curcolor[2]])
